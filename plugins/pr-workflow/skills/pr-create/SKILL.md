@@ -98,10 +98,6 @@ git diff develop...HEAD                          # 본문 (필요시 부분)
 - 이번 PR 후 동작/구조 1 (항목 A)
 - 이번 PR 후 동작/구조 2 (항목 B)
 - 이번 PR 후 동작/구조 3 (항목 C)
-
-## 테스트 계획
-- [ ] 시나리오 1
-- [ ] 시나리오 2
 ```
 
 작성 원칙:
@@ -109,9 +105,33 @@ git diff develop...HEAD                          # 본문 (필요시 부분)
 - AS-IS와 TO-BE는 각 1개 섹션, 항목별 서브 헤더 없음 — bullet 순서로 매칭
 - AS-IS는 "현재 코드는 X였다" 같은 사실 진술
 - TO-BE는 "이제 Y로 동작한다" — 구현 디테일이 아니라 **관찰 가능한 동작/구조**
-- 단순 리팩터링/정리만 있는 항목은 묶어서 "잡일" 한 줄로
 
-### 8. 브라우저에서 PR 페이지 열기
+### 8. origin 업스트림 확인
+
+`gh pr create`는 브랜치가 **origin에 push된 상태**여야 동작한다. 호출 전 확인:
+
+```bash
+git ls-remote --heads origin <branch>
+```
+
+결과가 비어 있으면 **PR 생성 진행 X**. 사용자에게 안내:
+
+```
+[pr-create] 현재 브랜치 '<branch>'가 origin에 없습니다.
+먼저 push 해주세요:
+  git push -u origin <branch>
+push 후 다시 호출하시면 됩니다.
+```
+
+자동으로 `git push` 를 실행하지 않는다 (사용자 의도 확인 필요). 사용자가 명시적으로 진행 요청하면 그때 push.
+
+추가 점검: 로컬이 origin보다 앞서있다면(unpushed commits) 표시:
+```bash
+git rev-list --count origin/<branch>..HEAD
+```
+0이 아니면 "로컬에 push 안 된 커밋 N개 있습니다. push 후 진행 권장" 안내.
+
+### 9. 브라우저에서 PR 페이지 열기
 
 ```bash
 gh pr create --web --base develop --title "<생성한 title>" --body "<생성한 body>"
@@ -119,7 +139,7 @@ gh pr create --web --base develop --title "<생성한 title>" --body "<생성한
 
 `--base develop` 명시. PR 생성 **직전** 페이지를 브라우저에 띄운다. 즉시 생성하지 않는다.
 
-### 9. 폴백 (gh가 없거나 실패)
+### 10. 폴백 (gh가 없거나 실패)
 
 URL 직접 구성 후 `open` (macOS):
 ```
@@ -137,6 +157,8 @@ https://github.com/<owner>/<repo>/compare/develop...<head>?quick_pull=1&title=<u
 - ❌ `--web` 빼고 `gh pr create` 실행 (즉시 PR 생성 금지)
 - ❌ 시크릿이 들어간 diff 본문을 PR body에 포함 (마스킹/제외)
 - ❌ 변경 항목을 커밋 단위로 1:1 나열 (의도 단위로 묶기)
+- ❌ origin 업스트림 확인 없이 `gh pr create` 실행 (8단계 필수)
+- ❌ 사용자 동의 없이 `git push` 자동 실행
 
 ## 출력 (Claude → 사용자)
 
