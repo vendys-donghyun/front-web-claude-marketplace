@@ -1,0 +1,5 @@
+{
+  "name": "security-base",
+  "version": "0.1.0",
+  "description": "벤디스 프론트엔드 공통 보안 정책. 위험 명령 차단, 시크릿 파일 보호, 공통 deny 리스트."
+}

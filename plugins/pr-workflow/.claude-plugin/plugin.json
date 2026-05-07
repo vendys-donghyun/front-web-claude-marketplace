@@ -1,0 +1,5 @@
+{
+  "name": "pr-workflow",
+  "version": "0.1.0",
+  "description": "PR 생성/스테이지 리뷰 자동화. /pr-workflow:pr-create, /pr-workflow:stage-review."
+}

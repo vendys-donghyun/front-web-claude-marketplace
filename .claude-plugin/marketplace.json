@@ -1,0 +1,18 @@
+{
+  "name": "vendys-marketplace",
+  "owner": {
+    "name": "Vendys Frontend"
+  },
+  "plugins": [
+    {
+      "name": "security-base",
+      "source": "./plugins/security-base",
+      "description": "공통 보안 정책: 위험 bash 명령 차단, 시크릿 파일 보호, 공통 deny 리스트"
+    },
+    {
+      "name": "pr-workflow",
+      "source": "./plugins/pr-workflow",
+      "description": "PR 워크플로우: pr-create(브라우저 PR 페이지 오픈), stage-review(스테이지 직전 점검)"
+    }
+  ]
+}
