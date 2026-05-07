@@ -1,6 +1,6 @@
 # front-web-claude-marketplace
 
-벤디스 프론트엔드 7개 프로젝트(cafeteria-web-electron, corp-web, market-web, sikdae-webview, store-web, vendys-homepage, vone-web)에 적용하는 Claude Code 공통 정책 마켓플레이스.
+벤디스 프론트엔드 프로젝트에 적용하는 Claude Code 공통 정책 마켓플레이스
 
 ## 포함 플러그인
 
