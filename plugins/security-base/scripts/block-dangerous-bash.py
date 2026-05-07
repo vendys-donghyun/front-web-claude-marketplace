@@ -1,7 +1,15 @@
 #!/usr/bin/env python3
 """PreToolUse:Bash — block dangerous commands.
 
-Blocks: rm -rf to system/home/wildcard, git push --force / -f, git reset --hard.
+Blocks:
+- rm -rf to system/home/wildcard/parent
+- git push --force / -f
+- git reset --hard
+- git commit/push --no-verify
+- curl|sh, wget|bash (remote script execution)
+- chmod 777 (world-writable)
+- npm/pnpm/yarn publish
+
 Allows: rm -rf <relative-path>, git push --force-with-lease.
 """
 import json
@@ -58,5 +66,17 @@ if re.search(r"\bgit\s+push\b", normalized):
 
 if re.search(r"\bgit\s+reset\b[^;&|]*--hard\b", normalized):
     block(command, "git reset --hard 차단")
+
+if re.search(r"\bgit\s+(commit|push)\b[^;&|]*--no-verify\b", normalized):
+    block(command, "git --no-verify 차단 (pre-commit/pre-push 훅 우회 금지)")
+
+if re.search(r"\b(curl|wget|fetch)\b[^;&|]*\|\s*\b(sh|bash|zsh|ash|dash)\b", normalized):
+    block(command, "원격 스크립트 직접 실행 차단 (curl|sh / wget|bash 패턴)")
+
+if re.search(r"\bchmod\b[^;&|]*?\b0?777\b", normalized):
+    block(command, "chmod 777 차단 (world-writable, 보안 악화)")
+
+if re.search(r"\b(npm|pnpm|yarn)\s+publish\b", normalized):
+    block(command, "package publish 차단 (실수로 공개 publish 방지)")
 
 sys.exit(0)

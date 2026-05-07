@@ -11,6 +11,10 @@
 | `rm -rf <대상>` | 시스템 경로(`/usr`, `/etc`, ...), 홈(`~`, `$HOME`), 와일드카드(`*`), 상위 경로(`..`) | 상대 경로 (`rm -rf node_modules`, `rm -rf dist`) |
 | `git push` | `--force`, `-f` | `--force-with-lease` |
 | `git reset --hard` | 모두 | (없음) |
+| `git commit/push --no-verify` | 모두 (pre-commit/push 훅 우회 금지) | (없음) |
+| `curl ... \| sh`, `wget ... \| bash` | 원격 스크립트 직접 실행 | 단순 다운로드 (`curl url > file`) |
+| `chmod 777` | `chmod 777`, `chmod -R 777`, `chmod 0777` | `chmod 644`, `chmod 755` 등 일반 권한 |
+| `npm/pnpm/yarn publish` | 모두 (실수 publish 방지) | (없음) |
 
 ### 시크릿 파일 (`PreToolUse:Read\|Write\|Edit\|NotebookEdit`)
 
@@ -32,6 +36,12 @@
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
       "Bash(git reset --hard:*)",
+      "Bash(git commit --no-verify:*)",
+      "Bash(git push --no-verify:*)",
+      "Bash(chmod 777:*)",
+      "Bash(npm publish:*)",
+      "Bash(pnpm publish:*)",
+      "Bash(yarn publish:*)",
       "Read(./.env)",
       "Read(./.env.*)",
       "Write(./.env)",
